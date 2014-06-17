@@ -11,7 +11,10 @@ This is an IDE designed for anyone and everyone:
 
 CraftBukkit offers these features:
 
-* Coming soon!
+* Simple and easy to use, no programming knowledge required beforehand!
+* Comes with built in guide to help you on your journey
+* Clean and simple UI for optimal simplicity
+* Can create advanced plugins!
 
 Check out the progress by taking a look at our screenshots! See here:
-[url]https://github.com/Skepter/Craftbukkit-IDE/tree/master/BukkitPluginIDE/ScreenshotsOfProgress[/url]
+https://github.com/Skepter/Craftbukkit-IDE/tree/master/BukkitPluginIDE/ScreenshotsOfProgress
