@@ -30,8 +30,8 @@ public class NewProject extends JDialog {
 	public NewProject() {
 		setType(Type.UTILITY);
 		setTitle("Create a new plugin");
-		setModalityType(ModalityType.APPLICATION_MODAL);
 		setBounds(100, 100, 450, 305);
+		setVisible(true);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

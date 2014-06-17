@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Color;
 
-public class StartScreen extends JDialog {
+public class SplashScreen extends JDialog {
 
 	private static final long serialVersionUID = 5866751799338096044L;
 	private static JProgressBar progressBar;
@@ -29,7 +29,7 @@ public class StartScreen extends JDialog {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			StartScreen dialog = new StartScreen();
+			SplashScreen dialog = new SplashScreen();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 			initUI(dialog);
@@ -38,7 +38,7 @@ public class StartScreen extends JDialog {
 		}
 	}
 
-	public StartScreen() {
+	public SplashScreen() {
 		getContentPane().setBackground(new Color(30, 144, 255));
 
 		setUndecorated(true);
@@ -55,8 +55,9 @@ public class StartScreen extends JDialog {
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup().addComponent(panel, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)));
 
 		JLabel icon = new JLabel("");
-		JLabel text = new JLabel("<html><b>Bukkit Plugin Maker v0.0.1</b><br>\r\nCreated by nobiths & Skepter<br><br>\r\n[Website link]</html>");
-		text.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		JLabel text = new JLabel("<html><b>Bukkit Plugin Maker v0.0.1</b><br>\r\nCreated by nobiths & Skepter<br><br>\r\n[Website link]<br>\r\n[Forums link?]</html>");
+		text.setForeground(new Color(255, 255, 255));
+		text.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		text.setVerticalAlignment(SwingConstants.TOP);
 
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -66,7 +67,7 @@ public class StartScreen extends JDialog {
 
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(StartScreen.class.getResource("/io/github/Skepter/imageResources/icons/Bukkit Logo.png"));
+			img = ImageIO.read(SplashScreen.class.getResource("/io/github/Skepter/imageResources/icons/Bukkit Logo.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -76,12 +77,12 @@ public class StartScreen extends JDialog {
 		getContentPane().setLayout(groupLayout);
 	}
 
-	private static void initUI(final StartScreen dialog) throws MalformedURLException {
+	private static void initUI(final SplashScreen dialog) throws MalformedURLException {
 		SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
 			@Override
 			protected Void doInBackground() throws Exception {
 				for (int i = 0; i < 100; i++) {
-					Thread.sleep(0);
+					Thread.sleep(50);
 					publish(i);
 				}
 				return null;
