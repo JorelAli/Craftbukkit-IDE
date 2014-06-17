@@ -68,7 +68,7 @@ public class MainWindow extends JFrame {
 		tabCount = 0;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 900, 600);
-
+		setLocationRelativeTo(null);
 		tabbedPane = new JTabbedPaneWithCloseIcons();
 		tabbedPane.setBackground(baseColor);
 		tabbedPane.setBorder(null);
@@ -86,6 +86,8 @@ public class MainWindow extends JFrame {
 		panelUtilities.setBackground(baseColor);
 		panelUtilities.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Utilities", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(255, 255, 255)));
 
+		//coming Soon!
+		//Adding functions here
 		toolBar = new JToolBar();
 		toolBar.setBackground(baseColor);
 		toolBar.setFloatable(false);
@@ -195,44 +197,11 @@ public class MainWindow extends JFrame {
 		sp.setFoldIndicatorEnabled(true);
 		cp.add(sp);
 
-		// A CompletionProvider is what knows of all possible completions, and
-		// analyzes the contents of the text area at the caret position to
-		// determine what completion choices should be presented. Most
-		// instances of CompletionProvider (such as DefaultCompletionProvider)
-		// are designed so that they can be shared among multiple text
-		// components.
 		CompletionProvider provider = createCompletionProvider();
 
-		// An AutoCompletion acts as a "middle-man" between a text component
-		// and a CompletionProvider. It manages any options associated with
-		// the auto-completion (the popup trigger key, whether to display a
-		// documentation window along with completion choices, etc.). Unlike
-		// CompletionProviders, instances of AutoCompletion cannot be shared
-		// among multiple text components.
 		AutoCompletion ac = new AutoCompletion(provider);
 		ac.install(textArea);
-
-		// setContentPane(cp);
-		// setTitle("Text Editor Demo");
-		// setDefaultCloseOperation(EXIT_ON_CLOSE);
-		// pack();
-		// setLocationRelativeTo(null);
-		// JScrollPane sPane = new JScrollPane(a);
-
-		// jsyntaxpane.DefaultSyntaxKit.initKit();
-		// jEdtTest.setEditorKit(new SyntaxKit("java"));
-		// pane.setEditorKit(new JavaSyntaxKit());
-		// EditorKit kit = pane.getEditorKit();
-		// toolBar.removeAll();
-		// if (kit instanceof DefaultSyntaxKit) {
-		// DefaultSyntaxKit defaultSyntaxKit = (DefaultSyntaxKit) kit;
-		// defaultSyntaxKit.addToolBarActions(pane, toolBar);
-		// }
-		// toolBar.validate();
-		// pane.setContentType("text/java");
-		//
-		 textArea.setText("package io.github.Skepter;\n\npublic class Main extends JavaPlugin {\n\n\t@Override\n\tpublic void onEnable() {\n\t\tgetLogger().info(\"Plugin has started!\");"
-		 + "\n\t}\n}");
+		textArea.setText("package io.github.Skepter;\n\npublic class Main extends JavaPlugin {\n\n\t@Override\n\tpublic void onEnable() {\n\t\tgetLogger().info(\"Plugin has started!\");" + "\n\t}\n}");
 
 		tabbedPane.addTab("Main class", cp);
 		JMenuBar menuBar = new JMenuBar();
@@ -275,7 +244,7 @@ public class MainWindow extends JFrame {
 				fileChooser.setFileFilter(new FileNameExtensionFilter("Java Files", "java"));
 				fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter());
 				fileChooser.showSaveDialog(null);
-				//If the file selection has been cancelled - return
+				// If the file selection has been cancelled - return
 				Component component = ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView();
 				String content = ((JTextArea) component).getText();
 				int retrival = fileChooser.showSaveDialog(null);

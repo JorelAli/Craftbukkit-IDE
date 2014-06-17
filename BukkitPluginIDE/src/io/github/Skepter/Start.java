@@ -14,24 +14,26 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
-public class Start {
+public class Start extends JFrame {
 	
+	private static final long serialVersionUID = -3185009150138353763L;
+
 	public Start() {
 		initialize();
 	}
 	
 	private void initialize() {
-		final JFrame frame = new JFrame();
-		frame.setVisible(true);
-		frame.setTitle("Welcome!");
-		frame.getContentPane().setBackground(new Color(30, 144, 255));
-		frame.setBounds(100, 100, 450, 200);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		setTitle("Welcome!");
+		getContentPane().setBackground(new Color(30, 144, 255));
+		setBounds(100, 100, 450, 200);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		JButton createNewPlugin = new JButton("Create a new plugin");
 		createNewPlugin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.dispose();
+				dispose();
 				new MainWindow();
 			}
 		});
@@ -44,9 +46,9 @@ public class Start {
 		JButton openRecentPlugin = new JButton("Open a recent plugin");
 
 		JComboBox<String> comboBox = new JComboBox<String>();
-		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(WelcomeText, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE).addGroup(groupLayout.createSequentialGroup().addComponent(openRecentPlugin).addGap(18).addComponent(comboBox, 0, 287, Short.MAX_VALUE)).addComponent(createNewPlugin)).addContainerGap()));
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup().addContainerGap().addComponent(WelcomeText, GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(openRecentPlugin)).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(createNewPlugin).addContainerGap()));
-		frame.getContentPane().setLayout(groupLayout);
+		getContentPane().setLayout(groupLayout);
 	}
 }
