@@ -381,7 +381,7 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @return The completion provider.
 	 */
-	private CompletionProvider createCompletionProvider() {
+	public static CompletionProvider createCompletionProvider() {
 
 		// A DefaultCompletionProvider is the simplest concrete implementation
 		// of CompletionProvider. This provider has no understanding of

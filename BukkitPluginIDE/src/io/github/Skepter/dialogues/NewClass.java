@@ -13,18 +13,18 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.EditorKit;
 
-import jsyntaxpane.DefaultSyntaxKit;
-import jsyntaxpane.syntaxkits.JavaSyntaxKit;
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 public class NewClass extends JDialog {
 	private static final long serialVersionUID = -5094872991274960527L;
@@ -59,20 +59,21 @@ public class NewClass extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						MainWindow.filesComboBox.addItem(textField.getText());
-						JEditorPane p = new JEditorPane();
-						new JScrollPane(p);
-						jsyntaxpane.DefaultSyntaxKit.initKit();
-						p.setEditorKit(new JavaSyntaxKit());
-						EditorKit kit = p.getEditorKit();
-								MainWindow.toolBar.removeAll();
-						if (kit instanceof DefaultSyntaxKit) {
-							DefaultSyntaxKit defaultSyntaxKit = (DefaultSyntaxKit) kit;
-							defaultSyntaxKit.addToolBarActions(p, MainWindow.toolBar);
-						}
-						MainWindow.toolBar.validate();
-						p.setContentType("text/java");
+						JPanel cp = new JPanel(new BorderLayout());
+						RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
+						textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+						textArea.setCodeFoldingEnabled(true);
+						textArea.setAntiAliasingEnabled(true);
+						RTextScrollPane sp = new RTextScrollPane(textArea);
+						sp.setFoldIndicatorEnabled(true);
+						cp.add(sp);
+
+						CompletionProvider provider = MainWindow.createCompletionProvider();
+						AutoCompletion ac = new AutoCompletion(provider);
+						ac.install(textArea);
+						
 						MainWindow.tabCount++;
-						MainWindow.tabbedPane.addTab(textField.getText(), null);
+						MainWindow.tabbedPane.addTab(textField.getText(), cp);
 //						MainWindow.tabbedPane.addTab("New class - " + MainWindow.tabCount, null);
 						MainWindow.tabbedPane.setSelectedIndex(MainWindow.tabCount);
 						dispose();
