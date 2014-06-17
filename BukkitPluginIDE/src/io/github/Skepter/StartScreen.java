@@ -55,13 +55,10 @@ public class StartScreen extends JDialog {
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup().addComponent(panel, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)));
 
 		JLabel icon = new JLabel("");
-
 		JLabel text = new JLabel("<html><b>Bukkit Plugin Maker v0.0.1</b><br>\r\nCreated by nobiths & Skepter<br><br>\r\n[Website link]</html>");
 		text.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		text.setVerticalAlignment(SwingConstants.TOP);
 
-		// lblNewLabel.setIcon(new
-		// ImageIcon(StartScreen.class.getResource("/io/github/Skepter/imageResources/icons/Bukkit Logo.png")));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel.createSequentialGroup().addGap(36).addComponent(icon, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE).addGap(18).addComponent(text, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE).addContainerGap()));
 		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.TRAILING).addGroup(gl_panel.createSequentialGroup().addContainerGap(35, Short.MAX_VALUE).addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false).addComponent(text, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(icon, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)).addGap(29)));
@@ -76,7 +73,6 @@ public class StartScreen extends JDialog {
 		Image dimg = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		icon.setIcon(imageIcon);
-
 		getContentPane().setLayout(groupLayout);
 	}
 
@@ -85,7 +81,7 @@ public class StartScreen extends JDialog {
 			@Override
 			protected Void doInBackground() throws Exception {
 				for (int i = 0; i < 100; i++) {
-					Thread.sleep(50);
+					Thread.sleep(0);
 					publish(i);
 				}
 				return null;

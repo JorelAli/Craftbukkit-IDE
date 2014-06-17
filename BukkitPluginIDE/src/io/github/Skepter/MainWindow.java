@@ -218,6 +218,7 @@ public class MainWindow extends JFrame {
 		mntmProject.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Notes.png")));
 		mntmProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				new NewProject();
 			}
 		});
@@ -294,6 +295,16 @@ public class MainWindow extends JFrame {
 				closeApplication();
 			}
 		});
+		
+		JMenuItem mntmGoToHome = new JMenuItem("Go to start window");
+		mntmGoToHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				new Start();
+			}
+		});
+		mntmGoToHome.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Home.png")));
+		mnCbide.add(mntmGoToHome);
 		mntmClose.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Exit.png")));
 		mnCbide.add(mntmClose);
 
