@@ -12,3 +12,6 @@ This is an IDE designed for anyone and everyone:
 CraftBukkit offers these features:
 
 * Coming soon!
+
+Check out the progress by taking a look at our screenshots! See here:
+[url]https://github.com/Skepter/Craftbukkit-IDE/tree/master/BukkitPluginIDE/ScreenshotsOfProgress[/url]
