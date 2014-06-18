@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -42,6 +43,9 @@ import javax.swing.JToolBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.fife.ui.autocomplete.AutoCompletion;
@@ -51,6 +55,7 @@ import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.ShorthandCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 public class MainUI extends JFrame {
@@ -64,8 +69,14 @@ public class MainUI extends JFrame {
 	public static JComboBox<String> filesComboBox;
 	public static JTabbedPaneWithCloseIcons tabbedPane;
 	public static Color baseColor;
+	private Theme theme;
 
 	public MainUI() {
+		try {
+			theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/default.xml"));
+		} catch (IOException e2) {
+//
+		}
 		setVisible(true);
 		getContentPane().setBackground(baseColor);
 		tabCount = 0;
@@ -75,6 +86,12 @@ public class MainUI extends JFrame {
 		tabbedPane.setBackground(baseColor);
 		tabbedPane.setBorder(null);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		tabbedPane.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				theme.apply(getRSyntaxTextArea());
+				//set theme here
+			}
+		});
 
 		final JPanel panelConsole = new JPanel();
 		panelConsole.setBackground(baseColor);
@@ -349,7 +366,15 @@ public class MainUI extends JFrame {
 		JMenuItem mntmChangeColor = new JMenuItem("Change color scheme");
 		mntmChangeColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				baseColor = JColorChooser.showDialog(null, "Choose a color scheme", baseColor);
+				JColorChooser chooser = new JColorChooser();
+				AbstractColorChooserPanel[] panels = chooser.getChooserPanels();
+                for (AbstractColorChooserPanel accp : panels) {
+                    if (accp.getDisplayName().equals("HSL")) {
+                        JOptionPane.showMessageDialog(null, accp, "Change color scheme", JOptionPane.QUESTION_MESSAGE);
+                    }
+                }
+                baseColor = chooser.getColor();
+				//baseColor = JColorChooser.showDialog(null, "Choose a color scheme", baseColor);
 				getContentPane().setBackground(baseColor);
 				panelConsole.setBackground(baseColor);
 				panelFiles.setBackground(baseColor);
@@ -359,6 +384,82 @@ public class MainUI extends JFrame {
 		});
 		mntmChangeColor.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Brush.png")));
 		menuPreferences.add(mntmChangeColor);
+		
+		JMenu mnSyntaxTheme = new JMenu("Syntax theme");
+		mnSyntaxTheme.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
+		menuPreferences.add(mnSyntaxTheme);
+		/* For this part, we need to set a Theme variable in the global class.
+		 * This has to be accessed by other classes adding classes (class dialog for example?)
+		 * Need to set a thing which 'updates' each tab when it goes to the tab.*/
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Dark");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/dark.xml"));
+					theme.apply(getRSyntaxTextArea());
+				} catch (IOException e1) {
+					ConsoleManager.getManager().error(e1.getCause().toString());
+				}
+			}
+		});
+		mntmNewMenuItem_2.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
+		mnSyntaxTheme.add(mntmNewMenuItem_2);
+		
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Default");
+		mntmNewMenuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/default.xml"));
+					theme.apply(getRSyntaxTextArea());
+				} catch (IOException e1) {
+					ConsoleManager.getManager().error(e1.getCause().toString());
+				}
+			}
+		});
+		mntmNewMenuItem_3.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
+		mnSyntaxTheme.add(mntmNewMenuItem_3);
+		
+		JMenuItem mntmEclipse = new JMenuItem("Eclipse");
+		mntmEclipse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/eclipse.xml"));
+					theme.apply(getRSyntaxTextArea());
+				} catch (IOException e1) {
+					ConsoleManager.getManager().error(e1.getCause().toString());
+				}
+			}
+		});
+		mntmEclipse.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
+		mnSyntaxTheme.add(mntmEclipse);
+		
+		JMenuItem mntmIdea = new JMenuItem("Idea");
+		mntmIdea.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/idea.xml"));
+					theme.apply(getRSyntaxTextArea());
+				} catch (IOException e1) {
+					ConsoleManager.getManager().error(e1.getCause().toString());
+				}
+			}
+		});
+		mntmIdea.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
+		mnSyntaxTheme.add(mntmIdea);
+		
+		JMenuItem mntmVs = new JMenuItem("Vs");
+		mntmVs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/vs.xml"));
+					theme.apply(getRSyntaxTextArea());
+				} catch (IOException e1) {
+					ConsoleManager.getManager().error(e1.getCause().toString());
+				}
+			}
+		});
+		mntmVs.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
+		mnSyntaxTheme.add(mntmVs);
 	}
 
 	public static void copyToClipboard(String s) {
@@ -386,6 +487,23 @@ public class MainUI extends JFrame {
 		} else {
 			return;
 		}
+	}
+	
+	public static RSyntaxTextArea getRSyntaxTextArea() {
+		if (tabbedPane.getSelectedComponent() instanceof JPanel) {
+			for (Component component : ((JPanel) tabbedPane.getSelectedComponent()).getComponents()) {
+				if (component instanceof JScrollPane) {
+					((JScrollPane) component).getViewport().getView();
+					Component syntaxArea = ((RTextScrollPane) component).getViewport().getView();
+					return (RSyntaxTextArea) syntaxArea;
+				}
+			}
+		} else if (tabbedPane.getSelectedComponent() instanceof JScrollPane) {
+			Component component = ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView();
+			((RSyntaxTextArea) component).insert(getClipboardContents(), ((RSyntaxTextArea) component).getCaretPosition());
+			return (RSyntaxTextArea) component;
+		}
+		return null;
 	}
 
 	public static String getClipboardContents() {

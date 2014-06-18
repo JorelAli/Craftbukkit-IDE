@@ -19,4 +19,8 @@ public class ConsoleManager {
 	public void log(String s) {
 		console.setText(console.getText() + "\n[Bukkit Plugin Maker] " + s);
 	}
+	
+	public void error(String s) {
+		console.setText(console.getText() + "\n[ERROR] " + s);
+	}
 }
