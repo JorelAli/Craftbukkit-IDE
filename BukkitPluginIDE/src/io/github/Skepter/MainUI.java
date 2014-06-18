@@ -48,11 +48,14 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.fife.rsta.ac.java.JavaParser;
+import org.fife.rsta.ac.java.tree.JavaOutlineTree;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.ShorthandCompletion;
+import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
@@ -75,7 +78,7 @@ public class MainUI extends JFrame {
 		try {
 			theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/default.xml"));
 		} catch (IOException e2) {
-//
+			//
 		}
 		setVisible(true);
 		getContentPane().setBackground(baseColor);
@@ -88,14 +91,25 @@ public class MainUI extends JFrame {
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabbedPane.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				theme.apply(getRSyntaxTextArea());
-				//set theme here
+				// theme.apply(getRSyntaxTextArea());
 			}
 		});
 
 		final JPanel panelConsole = new JPanel();
 		panelConsole.setBackground(baseColor);
 		panelConsole.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Console", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(255, 255, 255)));
+
+		JScrollPane scrollPane = new JScrollPane();
+		GroupLayout gl_panelConsole = new GroupLayout(panelConsole);
+		gl_panelConsole.setHorizontalGroup(gl_panelConsole.createParallelGroup(Alignment.LEADING).addGroup(gl_panelConsole.createSequentialGroup().addContainerGap().addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE).addContainerGap(10, Short.MAX_VALUE)));
+		gl_panelConsole.setVerticalGroup(gl_panelConsole.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING, gl_panelConsole.createSequentialGroup().addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE).addContainerGap()));
+
+		JTextPane console = new JTextPane();
+		scrollPane.setViewportView(console);
+		console.setEditable(false);
+		new ConsoleManager(console);
+		console.setText("[Title] IDE Initialized");
+		panelConsole.setLayout(gl_panelConsole);
 
 		final JPanel panelFiles = new JPanel();
 		panelFiles.setBackground(baseColor);
@@ -126,9 +140,23 @@ public class MainUI extends JFrame {
 		utilitiesListenerPanel.setBackground(new Color(255, 255, 255));
 		JPanel utilitiesActionPanel = new JPanel();
 		utilitiesActionPanel.setBackground(new Color(255, 255, 255));
+		JPanel utilitiesTreePanel = new JPanel();
+		utilitiesTreePanel.setBackground(new Color(255, 255, 255));
 		tabbedPaneUtilities.addTab("Commands", null, utilitiesCommandPanel, null);
 		tabbedPaneUtilities.insertTab("Listeners", null, utilitiesListenerPanel, null, 1);
 		tabbedPaneUtilities.insertTab("Actions", null, utilitiesActionPanel, null, 2);
+		tabbedPaneUtilities.insertTab("Tree", null, utilitiesTreePanel, null, 3);
+		GroupLayout gl_utilitiesTreePanel = new GroupLayout(utilitiesTreePanel);
+
+		JavaOutlineTree tree = new JavaOutlineTree();
+		System.out.println(getRSyntaxTextArea());
+		tree.listenTo(getRSyntaxTextArea());
+		tree.setVisible(true);
+		utilitiesTreePanel.add(tree);
+
+		gl_utilitiesTreePanel.setHorizontalGroup(gl_utilitiesTreePanel.createParallelGroup(Alignment.LEADING).addGap(0, 314, Short.MAX_VALUE));
+		gl_utilitiesTreePanel.setVerticalGroup(gl_utilitiesTreePanel.createParallelGroup(Alignment.LEADING).addGap(0, 261, Short.MAX_VALUE));
+		utilitiesTreePanel.setLayout(gl_utilitiesTreePanel);
 
 		JLabel lblNewLabel = new JLabel("Player actions:");
 
@@ -197,15 +225,8 @@ public class MainUI extends JFrame {
 		gl_panelFiles.setVerticalGroup(gl_panelFiles.createParallelGroup(Alignment.LEADING).addGroup(gl_panelFiles.createSequentialGroup().addComponent(filesComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE).addContainerGap(25, Short.MAX_VALUE)));
 		panelFiles.setLayout(gl_panelFiles);
 
-		JTextPane console = new JTextPane();
-		console.setEditable(false);
-		new ConsoleManager(console);
-		console.setText("[Title] IDE Initialized");
-		GroupLayout gl_panelConsole = new GroupLayout(panelConsole);
-		gl_panelConsole.setHorizontalGroup(gl_panelConsole.createParallelGroup(Alignment.LEADING).addGroup(gl_panelConsole.createSequentialGroup().addContainerGap().addComponent(console, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE).addContainerGap()));
-		gl_panelConsole.setVerticalGroup(gl_panelConsole.createParallelGroup(Alignment.LEADING).addGroup(gl_panelConsole.createSequentialGroup().addComponent(console, GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE).addContainerGap()));
-		panelConsole.setLayout(gl_panelConsole);
 		getContentPane().setLayout(groupLayout);
+
 		JPanel cp = new JPanel(new BorderLayout());
 		RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
 		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
@@ -219,7 +240,13 @@ public class MainUI extends JFrame {
 
 		AutoCompletion ac = new AutoCompletion(provider);
 		ac.install(textArea);
-		textArea.setText("package io.github.Skepter;\n\npublic class Main extends JavaPlugin {\n\n\t@Override\n\tpublic void onEnable() {\n\t\tgetLogger().info(\"Plugin has started!\");" + "\n\t}\n}");
+		textArea.setText("package io.github.Skepter;\nimport org.bukkit.plugin.java.JavaPlugin;\n\npublic class Main extends JavaPlugin {\n\n\t@Override\n\tpublic void onEnable() {\n\t\tgetLogger().info(\"Plugin has started!\");" + "\n\t}\n}");
+		textArea.addParser(new JavaParser(textArea));
+
+		// ///
+
+		ErrorStrip es = new ErrorStrip(textArea);
+		cp.add(es, BorderLayout.LINE_END);
 
 		tabbedPane.addTab("Main class", cp);
 		JMenuBar menuBar = new JMenuBar();
@@ -368,13 +395,12 @@ public class MainUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JColorChooser chooser = new JColorChooser();
 				AbstractColorChooserPanel[] panels = chooser.getChooserPanels();
-                for (AbstractColorChooserPanel accp : panels) {
-                    if (accp.getDisplayName().equals("HSL")) {
-                        JOptionPane.showMessageDialog(null, accp, "Change color scheme", JOptionPane.QUESTION_MESSAGE);
-                    }
-                }
-                baseColor = chooser.getColor();
-				//baseColor = JColorChooser.showDialog(null, "Choose a color scheme", baseColor);
+				for (AbstractColorChooserPanel accp : panels) {
+					if (accp.getDisplayName().equals("HSL")) {
+						JOptionPane.showMessageDialog(null, accp, "Change color scheme", JOptionPane.QUESTION_MESSAGE);
+					}
+				}
+				baseColor = chooser.getColor();
 				getContentPane().setBackground(baseColor);
 				panelConsole.setBackground(baseColor);
 				panelFiles.setBackground(baseColor);
@@ -384,13 +410,11 @@ public class MainUI extends JFrame {
 		});
 		mntmChangeColor.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Brush.png")));
 		menuPreferences.add(mntmChangeColor);
-		
+
 		JMenu mnSyntaxTheme = new JMenu("Syntax theme");
 		mnSyntaxTheme.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
 		menuPreferences.add(mnSyntaxTheme);
-		/* For this part, we need to set a Theme variable in the global class.
-		 * This has to be accessed by other classes adding classes (class dialog for example?)
-		 * Need to set a thing which 'updates' each tab when it goes to the tab.*/
+
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Dark");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -404,7 +428,7 @@ public class MainUI extends JFrame {
 		});
 		mntmNewMenuItem_2.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
 		mnSyntaxTheme.add(mntmNewMenuItem_2);
-		
+
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Default");
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -418,7 +442,7 @@ public class MainUI extends JFrame {
 		});
 		mntmNewMenuItem_3.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
 		mnSyntaxTheme.add(mntmNewMenuItem_3);
-		
+
 		JMenuItem mntmEclipse = new JMenuItem("Eclipse");
 		mntmEclipse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -432,7 +456,7 @@ public class MainUI extends JFrame {
 		});
 		mntmEclipse.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
 		mnSyntaxTheme.add(mntmEclipse);
-		
+
 		JMenuItem mntmIdea = new JMenuItem("Idea");
 		mntmIdea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -446,7 +470,7 @@ public class MainUI extends JFrame {
 		});
 		mntmIdea.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
 		mnSyntaxTheme.add(mntmIdea);
-		
+
 		JMenuItem mntmVs = new JMenuItem("Vs");
 		mntmVs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -469,7 +493,6 @@ public class MainUI extends JFrame {
 	}
 
 	public static void pasteIntoEditor() {
-		System.out.println(tabbedPane.getSelectedComponent().getName());
 		if (tabbedPane.getSelectedComponent() instanceof JPanel) {
 			for (Component component : ((JPanel) tabbedPane.getSelectedComponent()).getComponents()) {
 				if (component instanceof JScrollPane) {
@@ -488,7 +511,7 @@ public class MainUI extends JFrame {
 			return;
 		}
 	}
-	
+
 	public static RSyntaxTextArea getRSyntaxTextArea() {
 		if (tabbedPane.getSelectedComponent() instanceof JPanel) {
 			for (Component component : ((JPanel) tabbedPane.getSelectedComponent()).getComponents()) {
@@ -502,6 +525,11 @@ public class MainUI extends JFrame {
 			Component component = ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView();
 			((RSyntaxTextArea) component).insert(getClipboardContents(), ((RSyntaxTextArea) component).getCaretPosition());
 			return (RSyntaxTextArea) component;
+		} else {
+			ConsoleManager.getManager().log("Having trouble finding components, see list:");
+			for (Component component : tabbedPane.getComponents()) {
+				ConsoleManager.getManager().log(component.getName());
+			}
 		}
 		return null;
 	}
@@ -509,14 +537,12 @@ public class MainUI extends JFrame {
 	public static String getClipboardContents() {
 		String result = "";
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		// odd: the Object param of getContents is not currently used
 		Transferable contents = clipboard.getContents(null);
 		boolean hasTransferableText = (contents != null) && contents.isDataFlavorSupported(DataFlavor.stringFlavor);
 		if (hasTransferableText) {
 			try {
 				result = (String) contents.getTransferData(DataFlavor.stringFlavor);
 			} catch (UnsupportedFlavorException ex) {
-				// highly unlikely since we are using a standard DataFlavor
 				System.out.println(ex);
 				ex.printStackTrace();
 			} catch (IOException ex) {
@@ -527,22 +553,10 @@ public class MainUI extends JFrame {
 		return result;
 	}
 
-	/**
-	 * Create a simple provider that adds some Java-related completions.
-	 * 
-	 * @return The completion provider.
-	 */
 	public static CompletionProvider createCompletionProvider() {
 
-		// A DefaultCompletionProvider is the simplest concrete implementation
-		// of CompletionProvider. This provider has no understanding of
-		// language semantics. It simply checks the text entered up to the
-		// caret position for a match against known completions. This is all
-		// that is needed in the majority of cases.
 		DefaultCompletionProvider provider = new DefaultCompletionProvider();
 
-		// Add completions for all Java keywords. A BasicCompletion is just
-		// a straightforward word completion.
 		provider.addCompletion(new BasicCompletion(provider, "abstract"));
 		provider.addCompletion(new BasicCompletion(provider, "assert"));
 		provider.addCompletion(new BasicCompletion(provider, "break"));
@@ -586,11 +600,11 @@ public class MainUI extends JFrame {
 		provider.addCompletion(new BasicCompletion(provider, "volatile"));
 		provider.addCompletion(new BasicCompletion(provider, "while"));
 
-		// Add a couple of "shorthand" completions. These completions don't
-		// require the input text to be the same thing as the replacement text.
 		provider.addCompletion(new ShorthandCompletion(provider, "sysout", "System.out.println(", "System.out.println("));
 		provider.addCompletion(new ShorthandCompletion(provider, "syserr", "System.err.println(", "System.err.println("));
 		provider.addCompletion(new ShorthandCompletion(provider, "cmd", "@Override\n\tpublic boolean onCommand(CommandSender sender, Command command, String label, String[] args) {\n\t\t\n\t}"));
+		// template providers are for filling in gaps: sysout(<FILLME>) & it
+		// highlights <FILLME>
 		return provider;
 	}
 }
