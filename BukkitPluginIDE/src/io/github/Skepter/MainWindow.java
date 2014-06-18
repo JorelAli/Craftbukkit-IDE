@@ -96,8 +96,38 @@ public class MainWindow extends JFrame {
 		toolBar.setFloatable(false);
 
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(toolBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false).addComponent(panelConsole, 0, 0, Short.MAX_VALUE).addComponent(panelFiles, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE).addGroup(groupLayout.createSequentialGroup().addComponent(panelUtilities, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED))).addGap(10).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE))).addContainerGap()));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup().addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addComponent(tabbedPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE).addGroup(groupLayout.createSequentialGroup().addComponent(panelFiles, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(panelUtilities, GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(panelConsole, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))).addContainerGap()));
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 864, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(panelConsole, 0, 0, Short.MAX_VALUE)
+								.addComponent(panelFiles, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(panelUtilities, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)))
+							.addGap(10)
+							.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(panelFiles, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(panelUtilities, GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(panelConsole, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
+						.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE))
+					.addContainerGap())
+		);
 
 		JTabbedPane tabbedPaneUtilities = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout gl_panelUtilities = new GroupLayout(panelUtilities);
@@ -210,11 +240,11 @@ public class MainWindow extends JFrame {
 		menuBar.setBackground(new Color(192, 192, 192));
 		setJMenuBar(menuBar);
 
-		JMenu mnCbide = new JMenu("BukkitPluginIDE");
-		menuBar.add(mnCbide);
+		JMenu menuMain = new JMenu("BukkitPluginIDE");
+		menuBar.add(menuMain);
 		JMenu mnNewMenu = new JMenu("New");
 		mnNewMenu.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/New document.png")));
-		mnCbide.add(mnNewMenu);
+		menuMain.add(mnNewMenu);
 
 		JMenuItem mntmProject = new JMenuItem("Plugin");
 		mntmProject.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Notes.png")));
@@ -238,7 +268,7 @@ public class MainWindow extends JFrame {
 
 		JMenuItem mntmOpenProject = new JMenuItem("Open Plugin");
 		mntmOpenProject.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Folder.png")));
-		mnCbide.add(mntmOpenProject);
+		menuMain.add(mntmOpenProject);
 
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mntmSave.addActionListener(new ActionListener() {
@@ -266,11 +296,11 @@ public class MainWindow extends JFrame {
 			}
 		});
 		mntmSave.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Save.png")));
-		mnCbide.add(mntmSave);
+		menuMain.add(mntmSave);
 
 		JMenuItem mntmSaveAs = new JMenuItem("Save as");
 		mntmSaveAs.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Save.png")));
-		mnCbide.add(mntmSaveAs);
+		menuMain.add(mntmSaveAs);
 
 		JMenuItem mntmExportCraftbukkitPlugin = new JMenuItem("Export CraftBukkit Plugin");
 		mntmExportCraftbukkitPlugin.addActionListener(new ActionListener() {
@@ -288,7 +318,7 @@ public class MainWindow extends JFrame {
 			}
 		});
 		mntmExportCraftbukkitPlugin.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Next.png")));
-		mnCbide.add(mntmExportCraftbukkitPlugin);
+		menuMain.add(mntmExportCraftbukkitPlugin);
 
 		JMenuItem mntmClose = new JMenuItem("Close");
 		mntmClose.addActionListener(new java.awt.event.ActionListener() {
@@ -306,9 +336,23 @@ public class MainWindow extends JFrame {
 			}
 		});
 		mntmGoToHome.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Home.png")));
-		mnCbide.add(mntmGoToHome);
+		menuMain.add(mntmGoToHome);
 		mntmClose.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Exit.png")));
-		mnCbide.add(mntmClose);
+		menuMain.add(mntmClose);
+		
+		JMenu menuEdit = new JMenu("Edit");
+		menuBar.add(menuEdit);
+		
+		JMenu mnNewMenu_2 = new JMenu("Search");
+		menuEdit.add(mnNewMenu_2);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Find");
+		mntmNewMenuItem.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Find.png")));
+		mnNewMenu_2.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Replace");
+		mntmNewMenuItem_1.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Bookmark.png")));
+		mnNewMenu_2.add(mntmNewMenuItem_1);
 
 		JMenu menuInsert = new JMenu("Insert");
 		menuBar.add(menuInsert);
@@ -330,8 +374,8 @@ public class MainWindow extends JFrame {
 		mntmListener.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Earth.png")));
 		mnNewMenu_1.add(mntmListener);
 
-		JMenu preferencedMenu = new JMenu("Preferences");
-		menuBar.add(preferencedMenu);
+		JMenu menuPreferences = new JMenu("Preferences");
+		menuBar.add(menuPreferences);
 
 		JMenuItem mntmChangeColor = new JMenuItem("Change color scheme");
 		mntmChangeColor.addActionListener(new ActionListener() {
@@ -345,7 +389,7 @@ public class MainWindow extends JFrame {
 			}
 		});
 		mntmChangeColor.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Brush.png")));
-		preferencedMenu.add(mntmChangeColor);
+		menuPreferences.add(mntmChangeColor);
 	}
 
 	public static void copyToClipboard(String s) {
@@ -462,6 +506,5 @@ public class MainWindow extends JFrame {
 		provider.addCompletion(new ShorthandCompletion(provider, "cmd", "@Override\n\tpublic boolean onCommand(CommandSender sender, Command command, String label, String[] args) {\n\t\t\n\t}"));
 		provider.addCompletion(new VariableCompletion(provider, "text", "hello!"));
 		return provider;
-
 	}
 }
