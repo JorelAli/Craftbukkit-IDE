@@ -48,7 +48,6 @@ import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.ShorthandCompletion;
-import org.fife.ui.autocomplete.VariableCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -69,7 +68,6 @@ public class MainWindow extends JFrame {
 		setVisible(true);
 		getContentPane().setBackground(baseColor);
 		tabCount = 0;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 900, 600);
 		setLocationRelativeTo(null);
 		tabbedPane = new JTabbedPaneWithCloseIcons();
@@ -504,7 +502,6 @@ public class MainWindow extends JFrame {
 		provider.addCompletion(new ShorthandCompletion(provider, "sysout", "System.out.println(", "System.out.println("));
 		provider.addCompletion(new ShorthandCompletion(provider, "syserr", "System.err.println(", "System.err.println("));
 		provider.addCompletion(new ShorthandCompletion(provider, "cmd", "@Override\n\tpublic boolean onCommand(CommandSender sender, Command command, String label, String[] args) {\n\t\t\n\t}"));
-		provider.addCompletion(new VariableCompletion(provider, "text", "hello!"));
 		return provider;
 	}
 }
