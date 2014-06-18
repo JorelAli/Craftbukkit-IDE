@@ -1,6 +1,6 @@
 package io.github.Skepter.dialogues;
 
-import io.github.Skepter.MainWindow;
+import io.github.Skepter.MainUI;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 
-public class NewCommand extends JDialog {
+public class CommandUI extends JDialog {
 
 	/* Creates a new class */
 
@@ -31,13 +31,13 @@ public class NewCommand extends JDialog {
 	private JTextField cmdArgsBox;
 	private JTextField permBox;
 
-	public NewCommand() {
+	public CommandUI() {
 		setTitle("Insert a new command");
 		setType(Type.UTILITY);
 		setVisible(true);
 		setBounds(100, 100, 450, 240);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBackground(MainWindow.baseColor);
+		contentPanel.setBackground(MainUI.baseColor);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
@@ -56,12 +56,12 @@ public class NewCommand extends JDialog {
 		cmdArgsBox.setColumns(10);
 
 		final JCheckBox playerOnlyBox = new JCheckBox("Player only (doesn't work with console)");
-		playerOnlyBox.setBackground(MainWindow.baseColor);
+		playerOnlyBox.setBackground(MainUI.baseColor);
 		playerOnlyBox.setForeground(new Color(255, 255, 255));
 		playerOnlyBox.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		final JCheckBox requirePermBox = new JCheckBox("Require Permission?");
-		requirePermBox.setBackground(MainWindow.baseColor);
+		requirePermBox.setBackground(MainUI.baseColor);
 		requirePermBox.setForeground(new Color(255, 255, 255));
 		requirePermBox.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
@@ -73,7 +73,7 @@ public class NewCommand extends JDialog {
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
-			buttonPane.setBackground(MainWindow.baseColor);
+			buttonPane.setBackground(MainUI.baseColor);
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
@@ -88,8 +88,8 @@ public class NewCommand extends JDialog {
 							b.append(" && sender instanceof Player");
 						}
 						b.append(") {\n\t\t\t\n\t\t}\n\t}");
-						MainWindow.copyToClipboard(b.toString());
-						MainWindow.pasteIntoEditor();
+						MainUI.copyToClipboard(b.toString());
+						MainUI.pasteIntoEditor();
 						dispose();
 					}
 				});

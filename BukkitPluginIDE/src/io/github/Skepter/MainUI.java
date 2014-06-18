@@ -1,8 +1,9 @@
 package io.github.Skepter;
 
-import io.github.Skepter.dialogues.NewClass;
-import io.github.Skepter.dialogues.NewCommand;
-import io.github.Skepter.dialogues.NewProject;
+import io.github.Skepter.dialogues.ClassUI;
+import io.github.Skepter.dialogues.CommandUI;
+import io.github.Skepter.dialogues.ProjectUI;
+import io.github.Skepter.libs.JTabbedPaneWithCloseIcons;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -52,7 +53,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-public class MainWindow extends JFrame {
+public class MainUI extends JFrame {
 
 	// hashmap with tabs - ensure each is saved or not
 	// use this to check with JTabbedPaneWithCloseIcons
@@ -62,9 +63,9 @@ public class MainWindow extends JFrame {
 	public static JToolBar toolBar;
 	public static JComboBox<String> filesComboBox;
 	public static JTabbedPaneWithCloseIcons tabbedPane;
-	public static Color baseColor = new Color(30, 144, 255);
+	public static Color baseColor;
 
-	public MainWindow() {
+	public MainUI() {
 		setVisible(true);
 		getContentPane().setBackground(baseColor);
 		tabCount = 0;
@@ -87,45 +88,15 @@ public class MainWindow extends JFrame {
 		panelUtilities.setBackground(baseColor);
 		panelUtilities.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Utilities", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(255, 255, 255)));
 
-		//coming Soon!
-		//Adding functions here
+		// coming Soon!
+		// Adding functions here
 		toolBar = new JToolBar();
 		toolBar.setBackground(baseColor);
 		toolBar.setFloatable(false);
 
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 864, Short.MAX_VALUE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(panelConsole, 0, 0, Short.MAX_VALUE)
-								.addComponent(panelFiles, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(panelUtilities, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)))
-							.addGap(10)
-							.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)))
-					.addContainerGap())
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panelFiles, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panelUtilities, GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panelConsole, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
-						.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE))
-					.addContainerGap())
-		);
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 864, Short.MAX_VALUE).addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false).addComponent(panelConsole, 0, 0, Short.MAX_VALUE).addComponent(panelFiles, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE).addGroup(groupLayout.createSequentialGroup().addComponent(panelUtilities, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED))).addGap(10).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE))).addContainerGap()));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup().addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addComponent(panelFiles, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(panelUtilities, GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(panelConsole, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)).addContainerGap()));
 
 		JTabbedPane tabbedPaneUtilities = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout gl_panelUtilities = new GroupLayout(panelUtilities);
@@ -241,31 +212,31 @@ public class MainWindow extends JFrame {
 		JMenu menuMain = new JMenu("BukkitPluginIDE");
 		menuBar.add(menuMain);
 		JMenu mnNewMenu = new JMenu("New");
-		mnNewMenu.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/New document.png")));
+		mnNewMenu.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/New document.png")));
 		menuMain.add(mnNewMenu);
 
 		JMenuItem mntmProject = new JMenuItem("Plugin");
-		mntmProject.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Notes.png")));
+		mntmProject.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Notes.png")));
 		mntmProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				new NewProject();
+
+				new ProjectUI();
 			}
 		});
 		mnNewMenu.add(mntmProject);
 
 		JMenuItem mntmClass = new JMenuItem("Class");
-		mntmClass.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Text.png")));
+		mntmClass.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Text.png")));
 		mntmClass.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent e) {
-				new NewClass();
+				new ClassUI();
 			}
 		});
 		mnNewMenu.add(mntmClass);
 
 		JMenuItem mntmOpenProject = new JMenuItem("Open Plugin");
-		mntmOpenProject.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Folder.png")));
+		mntmOpenProject.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Folder.png")));
 		menuMain.add(mntmOpenProject);
 
 		JMenuItem mntmSave = new JMenuItem("Save");
@@ -293,11 +264,11 @@ public class MainWindow extends JFrame {
 				}
 			}
 		});
-		mntmSave.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Save.png")));
+		mntmSave.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Save.png")));
 		menuMain.add(mntmSave);
 
 		JMenuItem mntmSaveAs = new JMenuItem("Save as");
-		mntmSaveAs.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Save.png")));
+		mntmSaveAs.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Save.png")));
 		menuMain.add(mntmSaveAs);
 
 		JMenuItem mntmExportCraftbukkitPlugin = new JMenuItem("Export CraftBukkit Plugin");
@@ -315,7 +286,7 @@ public class MainWindow extends JFrame {
 				}
 			}
 		});
-		mntmExportCraftbukkitPlugin.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Next.png")));
+		mntmExportCraftbukkitPlugin.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Next.png")));
 		menuMain.add(mntmExportCraftbukkitPlugin);
 
 		JMenuItem mntmClose = new JMenuItem("Close");
@@ -325,51 +296,51 @@ public class MainWindow extends JFrame {
 				dispose();
 			}
 		});
-		
+
 		JMenuItem mntmGoToHome = new JMenuItem("Go to start window");
 		mntmGoToHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
-				new Start();
+				new HomeUI();
 			}
 		});
-		mntmGoToHome.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Home.png")));
+		mntmGoToHome.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Home.png")));
 		menuMain.add(mntmGoToHome);
-		mntmClose.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Exit.png")));
+		mntmClose.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Exit.png")));
 		menuMain.add(mntmClose);
-		
+
 		JMenu menuEdit = new JMenu("Edit");
 		menuBar.add(menuEdit);
-		
+
 		JMenu mnNewMenu_2 = new JMenu("Search");
 		menuEdit.add(mnNewMenu_2);
-		
+
 		JMenuItem mntmNewMenuItem = new JMenuItem("Find");
-		mntmNewMenuItem.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Find.png")));
+		mntmNewMenuItem.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Find.png")));
 		mnNewMenu_2.add(mntmNewMenuItem);
-		
+
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Replace");
-		mntmNewMenuItem_1.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Bookmark.png")));
+		mntmNewMenuItem_1.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Bookmark.png")));
 		mnNewMenu_2.add(mntmNewMenuItem_1);
 
 		JMenu menuInsert = new JMenu("Insert");
 		menuBar.add(menuInsert);
 
 		JMenu mnNewMenu_1 = new JMenu("New");
-		mnNewMenu_1.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/New document.png")));
+		mnNewMenu_1.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/New document.png")));
 		menuInsert.add(mnNewMenu_1);
 
 		JMenuItem mntmCommand = new JMenuItem("Command");
 		mntmCommand.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new NewCommand();
+				new CommandUI();
 			}
 		});
-		mntmCommand.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/application_xp_terminal.png")));
+		mntmCommand.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/application_xp_terminal.png")));
 		mnNewMenu_1.add(mntmCommand);
 
 		JMenuItem mntmListener = new JMenuItem("Listener");
-		mntmListener.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Earth.png")));
+		mntmListener.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Earth.png")));
 		mnNewMenu_1.add(mntmListener);
 
 		JMenu menuPreferences = new JMenu("Preferences");
@@ -386,7 +357,7 @@ public class MainWindow extends JFrame {
 				toolBar.setBackground(baseColor);
 			}
 		});
-		mntmChangeColor.setIcon(new ImageIcon(MainWindow.class.getResource("/io/github/Skepter/imageResources/icons/Brush.png")));
+		mntmChangeColor.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Brush.png")));
 		menuPreferences.add(mntmChangeColor);
 	}
 
@@ -395,19 +366,19 @@ public class MainWindow extends JFrame {
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);
 	}
-	
+
 	public static void pasteIntoEditor() {
 		System.out.println(tabbedPane.getSelectedComponent().getName());
-		if(tabbedPane.getSelectedComponent() instanceof JPanel) {
-			for(Component component : ((JPanel) tabbedPane.getSelectedComponent()).getComponents()) {
-				if(component instanceof JScrollPane) {
+		if (tabbedPane.getSelectedComponent() instanceof JPanel) {
+			for (Component component : ((JPanel) tabbedPane.getSelectedComponent()).getComponents()) {
+				if (component instanceof JScrollPane) {
 					((JScrollPane) component).getViewport().getView();
 					Component syntaxArea = ((RTextScrollPane) component).getViewport().getView();
 					((RSyntaxTextArea) syntaxArea).insert(getClipboardContents(), ((RSyntaxTextArea) syntaxArea).getCaretPosition());
 					break;
 				}
 			}
-		} else if(tabbedPane.getSelectedComponent() instanceof JScrollPane) {
+		} else if (tabbedPane.getSelectedComponent() instanceof JScrollPane) {
 			Component component = ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView();
 			((RSyntaxTextArea) component).insert(getClipboardContents(), ((RSyntaxTextArea) component).getCaretPosition());
 			RSyntaxTextArea x = (RSyntaxTextArea) component;
@@ -416,7 +387,7 @@ public class MainWindow extends JFrame {
 			return;
 		}
 	}
-	
+
 	public static String getClipboardContents() {
 		String result = "";
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

@@ -1,6 +1,6 @@
 package io.github.Skepter;
 
-import io.github.Skepter.dialogues.NewProject;
+import io.github.Skepter.dialogues.ProjectUI;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,30 +17,30 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
-public class Start extends JFrame {
+public class HomeUI extends JFrame {
 	
 	private static final long serialVersionUID = -3185009150138353763L;
 
-	public Start() {
+	public HomeUI() {
 		initialize();
 	}
 	
 	private void initialize() {
 		setVisible(true);
 		setTitle("Start page");
-		getContentPane().setBackground(MainWindow.baseColor);
+		getContentPane().setBackground(MainUI.baseColor);
 		setBounds(100, 100, 530, 218);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		JButton createNewPlugin = new JButton("Create a new plugin");
 		createNewPlugin.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		createNewPlugin.setIcon(new ImageIcon(Start.class.getResource("/io/github/Skepter/imageResources/icons/Create.png")));
+		createNewPlugin.setIcon(new ImageIcon(HomeUI.class.getResource("/io/github/Skepter/imageResources/icons/Create.png")));
 		createNewPlugin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
-				new MainWindow();
-				new NewProject();
+				new MainUI();
+				new ProjectUI();
 			}
 		});
 
@@ -51,18 +51,18 @@ public class Start extends JFrame {
 
 		JButton openRecentPlugin = new JButton("Open a recent plugin");
 		openRecentPlugin.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		openRecentPlugin.setIcon(new ImageIcon(Start.class.getResource("/io/github/Skepter/imageResources/icons/Folder.png")));
+		openRecentPlugin.setIcon(new ImageIcon(HomeUI.class.getResource("/io/github/Skepter/imageResources/icons/Folder.png")));
 
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JButton learnPlugin = new JButton("Learn how to create plugins");
 		learnPlugin.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		learnPlugin.setIcon(new ImageIcon(Start.class.getResource("/io/github/Skepter/imageResources/icons/Help book 3d.png")));
+		learnPlugin.setIcon(new ImageIcon(HomeUI.class.getResource("/io/github/Skepter/imageResources/icons/Help book 3d.png")));
 		
 		JButton helpButton = new JButton("Help");
 		helpButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		helpButton.setIcon(new ImageIcon(Start.class.getResource("/io/github/Skepter/imageResources/icons/Help symbol.png")));
+		helpButton.setIcon(new ImageIcon(HomeUI.class.getResource("/io/github/Skepter/imageResources/icons/Help symbol.png")));
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)

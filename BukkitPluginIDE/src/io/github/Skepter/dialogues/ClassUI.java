@@ -1,7 +1,7 @@
 package io.github.Skepter.dialogues;
 
 import io.github.Skepter.ConsoleManager;
-import io.github.Skepter.MainWindow;
+import io.github.Skepter.MainUI;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -26,12 +26,12 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-public class NewClass extends JDialog {
+public class ClassUI extends JDialog {
 	private static final long serialVersionUID = -5094872991274960527L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 
-	public NewClass() {
+	public ClassUI() {
 		setType(Type.UTILITY);
 		setTitle("Create a new class");
 		setVisible(true);
@@ -58,7 +58,7 @@ public class NewClass extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						MainWindow.filesComboBox.addItem(textField.getText());
+						MainUI.filesComboBox.addItem(textField.getText());
 						JPanel cp = new JPanel(new BorderLayout());
 						RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
 						textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
@@ -68,14 +68,14 @@ public class NewClass extends JDialog {
 						sp.setFoldIndicatorEnabled(true);
 						cp.add(sp);
 
-						CompletionProvider provider = MainWindow.createCompletionProvider();
+						CompletionProvider provider = MainUI.createCompletionProvider();
 						AutoCompletion ac = new AutoCompletion(provider);
 						ac.install(textArea);
 						
-						MainWindow.tabCount++;
-						MainWindow.tabbedPane.addTab(textField.getText(), cp);
+						MainUI.tabCount++;
+						MainUI.tabbedPane.addTab(textField.getText(), cp);
 //						MainWindow.tabbedPane.addTab("New class - " + MainWindow.tabCount, null);
-						MainWindow.tabbedPane.setSelectedIndex(MainWindow.tabCount);
+						MainUI.tabbedPane.setSelectedIndex(MainUI.tabCount);
 						dispose();
 						ConsoleManager.getManager().log("Created a new class: " + textField.getText());
 					}

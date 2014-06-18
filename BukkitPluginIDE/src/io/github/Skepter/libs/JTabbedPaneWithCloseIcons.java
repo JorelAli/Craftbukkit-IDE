@@ -1,4 +1,6 @@
-package io.github.Skepter;
+package io.github.Skepter.libs;
+
+import io.github.Skepter.MainUI;
 
 import javax.swing.*;
 
@@ -44,7 +46,7 @@ public class JTabbedPaneWithCloseIcons extends JTabbedPane implements
 			}
 			if (rect.contains(e.getX(), e.getY()) && rect != null) {
 				this.removeTabAt(tabNumber);
-				MainWindow.tabCount--;
+				MainUI.tabCount--;
 			}
 		}
 	}

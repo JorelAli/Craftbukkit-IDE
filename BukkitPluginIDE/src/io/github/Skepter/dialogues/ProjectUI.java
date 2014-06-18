@@ -1,6 +1,6 @@
 package io.github.Skepter.dialogues;
 
-import io.github.Skepter.MainWindow;
+import io.github.Skepter.MainUI;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -22,7 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 
-public class NewProject extends JDialog {
+public class ProjectUI extends JDialog {
 
 	private static final long serialVersionUID = -3464158322822086379L;
 	private final JPanel contentPanel = new JPanel();
@@ -31,13 +31,13 @@ public class NewProject extends JDialog {
 	private JTextField authors;
 	private JTextField pluginDescription;
 	
-	public NewProject() {
+	public ProjectUI() {
 		setType(Type.UTILITY);
 		setTitle("Create a new plugin");
 		setBounds(100, 100, 450, 305);
 		setVisible(true);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBackground(MainWindow.baseColor);
+		contentPanel.setBackground(MainUI.baseColor);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
@@ -80,10 +80,10 @@ public class NewProject extends JDialog {
 		pluginDescription.setColumns(10);
 
 		JCheckBox boolConfig = new JCheckBox("Requires Config");
-		boolConfig.setBackground(MainWindow.baseColor);
+		boolConfig.setBackground(MainUI.baseColor);
 
 		JCheckBox boolAdvancedPlugin = new JCheckBox("Advanced plugin");
-		boolAdvancedPlugin.setBackground(MainWindow.baseColor);
+		boolAdvancedPlugin.setBackground(MainUI.baseColor);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -142,7 +142,7 @@ public class NewProject extends JDialog {
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
-			buttonPane.setBackground(MainWindow.baseColor);
+			buttonPane.setBackground(MainUI.baseColor);
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 

@@ -29,6 +29,7 @@ public class SplashScreen extends JDialog {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			MainUI.baseColor = new Color(30, 144, 255);
 			SplashScreen dialog = new SplashScreen();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
@@ -39,7 +40,7 @@ public class SplashScreen extends JDialog {
 	}
 
 	public SplashScreen() {
-		getContentPane().setBackground(MainWindow.baseColor);
+		getContentPane().setBackground(MainUI.baseColor);
 
 		setUndecorated(true);
 		setBounds(100, 100, 450, 200);
@@ -48,7 +49,7 @@ public class SplashScreen extends JDialog {
 		progressBar.setIndeterminate(true);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(MainWindow.baseColor);
+		panel.setBackground(MainUI.baseColor);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(progressBar, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE).addComponent(panel, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE));
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup().addComponent(panel, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)));
@@ -95,7 +96,7 @@ public class SplashScreen extends JDialog {
 			@Override
 			protected void done() {
 				dialog.dispose();
-				new Start();
+				new HomeUI();
 			}
 		};
 		worker.execute();

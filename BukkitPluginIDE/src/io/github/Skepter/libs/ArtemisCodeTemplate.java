@@ -1,4 +1,4 @@
-package io.github.Skepter;
+package io.github.Skepter.libs;
 //There is a TemplateCompletion class that you could use instead of ShorthandCompletion. Unfortunately this did not seem to work for me (tried it in the AutoCompleteDemo example).
 //
 //Alternative approach is to use a CodeTemplateManager and extend the CodeTemplate. Below is an example (comes from CodeTemplateDemo).
