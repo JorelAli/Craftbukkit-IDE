@@ -28,7 +28,7 @@ public class Start extends JFrame {
 	private void initialize() {
 		setVisible(true);
 		setTitle("Start page");
-		getContentPane().setBackground(new Color(30, 144, 255));
+		getContentPane().setBackground(MainWindow.baseColor);
 		setBounds(100, 100, 530, 218);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

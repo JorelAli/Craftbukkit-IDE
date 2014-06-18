@@ -39,17 +39,16 @@ public class SplashScreen extends JDialog {
 	}
 
 	public SplashScreen() {
-		getContentPane().setBackground(new Color(30, 144, 255));
+		getContentPane().setBackground(MainWindow.baseColor);
 
 		setUndecorated(true);
 		setBounds(100, 100, 450, 200);
 		setLocationRelativeTo(null);
 		progressBar = new JProgressBar();
-		progressBar.setBackground(new Color(30, 144, 255));
 		progressBar.setIndeterminate(true);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(30, 144, 255));
+		panel.setBackground(MainWindow.baseColor);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(progressBar, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE).addComponent(panel, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE));
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup().addComponent(panel, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)));

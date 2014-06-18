@@ -9,7 +9,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -60,7 +63,7 @@ public class MainWindow extends JFrame {
 	public static JToolBar toolBar;
 	public static JComboBox<String> filesComboBox;
 	public static JTabbedPaneWithCloseIcons tabbedPane;
-	private Color baseColor = new Color(30, 144, 255);
+	public static Color baseColor = new Color(30, 144, 255);
 
 	public MainWindow() {
 		setVisible(true);
@@ -187,7 +190,6 @@ public class MainWindow extends JFrame {
 		gl_panelConsole.setVerticalGroup(gl_panelConsole.createParallelGroup(Alignment.LEADING).addGroup(gl_panelConsole.createSequentialGroup().addComponent(console, GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE).addContainerGap()));
 		panelConsole.setLayout(gl_panelConsole);
 		getContentPane().setLayout(groupLayout);
-		// JEditorPane pane = new JEditorPane();
 		JPanel cp = new JPanel(new BorderLayout());
 		RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
 		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
@@ -292,7 +294,7 @@ public class MainWindow extends JFrame {
 		mntmClose.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent e) {
-				closeApplication();
+				dispose();
 			}
 		});
 		
@@ -346,14 +348,52 @@ public class MainWindow extends JFrame {
 		preferencedMenu.add(mntmChangeColor);
 	}
 
-	public void closeApplication() {
-		dispose();
-	}
-
 	public static void copyToClipboard(String s) {
 		StringSelection stringSelection = new StringSelection(s);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);
+	}
+	
+	public static void pasteIntoEditor() {
+		System.out.println(tabbedPane.getSelectedComponent().getName());
+		if(tabbedPane.getSelectedComponent() instanceof JPanel) {
+			for(Component component : ((JPanel) tabbedPane.getSelectedComponent()).getComponents()) {
+				if(component instanceof JScrollPane) {
+					((JScrollPane) component).getViewport().getView();
+					Component syntaxArea = ((RTextScrollPane) component).getViewport().getView();
+					((RSyntaxTextArea) syntaxArea).insert(getClipboardContents(), ((RSyntaxTextArea) syntaxArea).getCaretPosition());
+					break;
+				}
+			}
+		} else if(tabbedPane.getSelectedComponent() instanceof JScrollPane) {
+			Component component = ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView();
+			((RSyntaxTextArea) component).insert(getClipboardContents(), ((RSyntaxTextArea) component).getCaretPosition());
+			RSyntaxTextArea x = (RSyntaxTextArea) component;
+			System.out.println(x.getCaretPosition());
+		} else {
+			return;
+		}
+	}
+	
+	public static String getClipboardContents() {
+		String result = "";
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		// odd: the Object param of getContents is not currently used
+		Transferable contents = clipboard.getContents(null);
+		boolean hasTransferableText = (contents != null) && contents.isDataFlavorSupported(DataFlavor.stringFlavor);
+		if (hasTransferableText) {
+			try {
+				result = (String) contents.getTransferData(DataFlavor.stringFlavor);
+			} catch (UnsupportedFlavorException ex) {
+				// highly unlikely since we are using a standard DataFlavor
+				System.out.println(ex);
+				ex.printStackTrace();
+			} catch (IOException ex) {
+				System.out.println(ex);
+				ex.printStackTrace();
+			}
+		}
+		return result;
 	}
 
 	/**
