@@ -11,7 +11,8 @@ This is an IDE designed for anyone and everyone:
 * Those who don't know how to program in Java
 * Those who wants to experiment with new things
 
-Bukkit Plugin Maker offers these features:
+Features:
+---------
 
 * Simple and easy to use, no programming knowledge required beforehand!
 * Comes with built in guide to help you on your journey
@@ -36,5 +37,11 @@ Upcoming features:
 * Dependancy downloader from BukkitDev/Curse's website!
 * Built in YAML checking
 
+Links
+-----
+
 Check out the progress by taking a look at our screenshots! See here:
 https://github.com/Skepter/Craftbukkit-IDE/tree/master/BukkitPluginIDE/ScreenshotsOfProgress
+
+Have a feature you want added? Creating an account with snowy-evening so submit features:
+https://snowy-evening.com/Skepter/craftbukkit-ide-bukkit-plugin-maker
