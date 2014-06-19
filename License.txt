@@ -1,0 +1,17 @@
+Licensing:
+Copyright c 2014 - nobiths & Skepter
+
+Things you can do:
+* Download the Bukkit Plugin Maker
+* Use the Bukkit Plugin Maker
+* Tell other people about the Bukkit Plugin Maker
+* Check out the source code, that's why its there
+* Refer our name with the product you create with this program. For example if you create a Bukkit plugin, you could leave a little message at the bottom saying 'made with Bukkit Plugin Maker' or similar
+* Ask us a question, post comments or tell us how we can improve!
+
+Things you cannot do:
+* Redistribute the Bukkit Plugin Maker elsewhere on the net, you can however use a link to this page or any of the available banners
+* Modify any of the code in any sort of way
+* Recreate this and mark it as your own work
+* Sell this project at a price, it is free for all and will remain that way (donations are accepted though!)
+* Decompile our program
