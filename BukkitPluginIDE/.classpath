@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="C:/Users/Jorel/Documents/eclipse/external libraries/autocomplete.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Jorel/Documents/eclipse/external libraries/rstaui.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Jorel/Documents/eclipse/external libraries/language_support.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jorel/Documents/eclipse/external libraries/weblaf-1.27.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -28,7 +28,8 @@ public class SplashScreen extends JDialog {
 
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel("com.alee.laf.WebLookAndFeel");
+			//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			MainUI.baseColor = new Color(30, 144, 255);
 			SplashScreen dialog = new SplashScreen();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
