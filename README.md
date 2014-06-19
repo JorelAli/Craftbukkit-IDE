@@ -37,6 +37,11 @@ Upcoming features:
 * Dependancy downloader from BukkitDev/Curse's website!
 * Built in YAML checking
 
+Downloading and usage:
+----------------------
+Since a download link is not available as it is still in BETA version 0.0.1, you can read up on our license. It is unlike the other licenses so it is very important that they are read! (I know they are boring and long, but we tried our best to keep it short and straight to the point)
+https://github.com/Skepter/Craftbukkit-IDE/blob/master/License.txt
+
 Links
 -----
 
