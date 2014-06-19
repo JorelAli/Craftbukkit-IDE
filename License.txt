@@ -19,3 +19,8 @@ Things you cannot do:
 * Sell this project at a price, it is free for all and will remain 
   that way (donations are accepted though!)
 * Decompile our program
+
+If you fail to comply with these terms these actions may be enforced:
+* Source code may be taken down
+* Code may be obfuscated
+* Program may be taken down
