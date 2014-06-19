@@ -15,6 +15,8 @@ CraftBukkit offers these features:
 * Comes with built in guide to help you on your journey
 * Clean and simple UI for optimal simplicity
 * Can create advanced plugins!
+* Amazing tools for advanced programmers such as:
+* * Plugin.yml creator
 
 Check out the progress by taking a look at our screenshots! See here:
 https://github.com/Skepter/Craftbukkit-IDE/tree/master/BukkitPluginIDE/ScreenshotsOfProgress
