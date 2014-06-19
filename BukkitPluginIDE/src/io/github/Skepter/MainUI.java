@@ -20,6 +20,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -75,14 +76,17 @@ public class MainUI extends JFrame {
 	private Theme theme;
 
 	public MainUI() {
+
+		setBounds(100, 100, 900, 600);
+		setLocationRelativeTo(null);
+
 		try {
 			theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/default.xml"));
 		} catch (IOException e2) {
 		}
 		getContentPane().setBackground(baseColor);
 		tabCount = 0;
-		setBounds(100, 100, 900, 600);
-		setLocationRelativeTo(null);
+
 		tabbedPane = new JTabbedPaneWithCloseIcons();
 		tabbedPane.setBackground(baseColor);
 		tabbedPane.setBorder(null);
@@ -93,15 +97,33 @@ public class MainUI extends JFrame {
 			}
 		});
 
+		/* Nav: RSyntaxTextArea */
+
+		JPanel cp = new JPanel(new BorderLayout());
+		RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
+		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+		textArea.setCodeFoldingEnabled(true);
+		textArea.setAntiAliasingEnabled(true);
+		RTextScrollPane sp = new RTextScrollPane(textArea);
+		sp.setFoldIndicatorEnabled(true);
+		cp.add(sp);
+		CompletionProvider provider = createCompletionProvider();
+		AutoCompletion ac = new AutoCompletion(provider);
+		ac.install(textArea);
+		textArea.setText("package io.github.Skepter;\nimport org.bukkit.plugin.java.JavaPlugin;\n\npublic class Main extends JavaPlugin {\n\n\t@Override\n\tpublic void onEnable() {\n\t\tgetLogger().info(\"Plugin has started!\");" + "\n\t}\n}");
+		textArea.addParser(new JavaParser(textArea));
+		ErrorStrip es = new ErrorStrip(textArea);
+		cp.add(es, BorderLayout.LINE_END);
+		tabbedPane.addTab("Main class", cp);
+		
+		/* Nav: Setup Console */
 		final JPanel panelConsole = new JPanel();
 		panelConsole.setBackground(baseColor);
 		panelConsole.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Console", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(255, 255, 255)));
-
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_panelConsole = new GroupLayout(panelConsole);
 		gl_panelConsole.setHorizontalGroup(gl_panelConsole.createParallelGroup(Alignment.LEADING).addGroup(gl_panelConsole.createSequentialGroup().addContainerGap().addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE).addContainerGap(10, Short.MAX_VALUE)));
 		gl_panelConsole.setVerticalGroup(gl_panelConsole.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING, gl_panelConsole.createSequentialGroup().addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE).addContainerGap()));
-
 		JTextPane console = new JTextPane();
 		scrollPane.setViewportView(console);
 		console.setEditable(false);
@@ -109,6 +131,7 @@ public class MainUI extends JFrame {
 		console.setText("[Title] IDE Initialized");
 		panelConsole.setLayout(gl_panelConsole);
 
+		/* Nav: Setup files and utilities panels */
 		final JPanel panelFiles = new JPanel();
 		panelFiles.setBackground(baseColor);
 		panelFiles.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Files", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(255, 255, 255)));
@@ -117,18 +140,18 @@ public class MainUI extends JFrame {
 		panelUtilities.setBackground(baseColor);
 		panelUtilities.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Utilities", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(255, 255, 255)));
 
-		// coming Soon!
-		// Adding functions here
 		toolBar = new JToolBar();
 		toolBar.setBackground(baseColor);
 		toolBar.setFloatable(false);
 
+		/* Whatever you do, DO NOT REMOVE THIS LINE OF CODE!! */
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 864, Short.MAX_VALUE).addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false).addComponent(panelConsole, 0, 0, Short.MAX_VALUE).addComponent(panelFiles, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE).addGroup(groupLayout.createSequentialGroup().addComponent(panelUtilities, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED))).addGap(10).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE))).addContainerGap()));
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup().addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addComponent(panelFiles, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(panelUtilities, GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(panelConsole, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)).addContainerGap()));
+		getContentPane().setLayout(groupLayout);
 
-		/* Nav: Utilities panel on the left hand side*/
-		
+		/* Nav: Utilities panel on the left hand side */
+
 		JTabbedPane tabbedPaneUtilities = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout gl_panelUtilities = new GroupLayout(panelUtilities);
 		gl_panelUtilities.setHorizontalGroup(gl_panelUtilities.createParallelGroup(Alignment.LEADING).addGroup(gl_panelUtilities.createSequentialGroup().addContainerGap().addComponent(tabbedPaneUtilities, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE).addContainerGap()));
@@ -146,10 +169,13 @@ public class MainUI extends JFrame {
 		tabbedPaneUtilities.insertTab("Listeners", null, utilitiesListenerPanel, null, 1);
 		tabbedPaneUtilities.insertTab("Actions", null, utilitiesActionPanel, null, 2);
 		tabbedPaneUtilities.insertTab("Tree", null, utilitiesTreePanel, null, 3);
-		GroupLayout gl_utilitiesTreePanel = new GroupLayout(utilitiesTreePanel);
 
-		gl_utilitiesTreePanel.setHorizontalGroup(gl_utilitiesTreePanel.createParallelGroup(Alignment.LEADING).addGap(0, 314, Short.MAX_VALUE));
-		gl_utilitiesTreePanel.setVerticalGroup(gl_utilitiesTreePanel.createParallelGroup(Alignment.LEADING).addGap(0, 261, Short.MAX_VALUE));
+		//JTree tree = new JTree();
+		JavaOutlineTree tree = new JavaOutlineTree();
+		tree.listenTo(getRSyntaxTextArea(1));
+		GroupLayout gl_utilitiesTreePanel = new GroupLayout(utilitiesTreePanel);
+		gl_utilitiesTreePanel.setHorizontalGroup(gl_utilitiesTreePanel.createParallelGroup(Alignment.LEADING).addGroup(gl_utilitiesTreePanel.createSequentialGroup().addGap(9).addComponent(tree, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE).addContainerGap(87, Short.MAX_VALUE)));
+		gl_utilitiesTreePanel.setVerticalGroup(gl_utilitiesTreePanel.createParallelGroup(Alignment.LEADING).addGroup(gl_utilitiesTreePanel.createSequentialGroup().addGap(8).addComponent(tree, GroupLayout.PREFERRED_SIZE, 227, GroupLayout.PREFERRED_SIZE).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		utilitiesTreePanel.setLayout(gl_utilitiesTreePanel);
 
 		JLabel lblNewLabel = new JLabel("Player actions:");
@@ -194,7 +220,6 @@ public class MainUI extends JFrame {
 		JButton btnNewButton = new JButton("Insert Player");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
 			}
 		});
 		GroupLayout gl_utilitiesCommandPanel = new GroupLayout(utilitiesCommandPanel);
@@ -219,39 +244,8 @@ public class MainUI extends JFrame {
 		gl_panelFiles.setVerticalGroup(gl_panelFiles.createParallelGroup(Alignment.LEADING).addGroup(gl_panelFiles.createSequentialGroup().addComponent(filesComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE).addContainerGap(25, Short.MAX_VALUE)));
 		panelFiles.setLayout(gl_panelFiles);
 
-		getContentPane().setLayout(groupLayout);
+		/* Nav: Begin of JMenuBar */
 
-		/* Nav: RSyntaxTextArea*/
-		
-		JPanel cp = new JPanel(new BorderLayout());
-		RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
-		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
-		textArea.setCodeFoldingEnabled(true);
-		textArea.setAntiAliasingEnabled(true);
-		RTextScrollPane sp = new RTextScrollPane(textArea);
-		sp.setFoldIndicatorEnabled(true);
-		cp.add(sp);
-
-		CompletionProvider provider = createCompletionProvider();
-
-		AutoCompletion ac = new AutoCompletion(provider);
-		ac.install(textArea);
-		textArea.setText("package io.github.Skepter;\nimport org.bukkit.plugin.java.JavaPlugin;\n\npublic class Main extends JavaPlugin {\n\n\t@Override\n\tpublic void onEnable() {\n\t\tgetLogger().info(\"Plugin has started!\");" + "\n\t}\n}");
-		textArea.addParser(new JavaParser(textArea));
-
-		// ///
-
-		ErrorStrip es = new ErrorStrip(textArea);
-		cp.add(es, BorderLayout.LINE_END);
-		tabbedPane.addTab("Main class", cp);
-		
-		JavaOutlineTree tree = new JavaOutlineTree();
-		tree.listenTo(getRSyntaxTextArea());
-		tree.setVisible(true);
-		utilitiesTreePanel.add(tree);
-		
-		/* Nav: Begin of JMenuBar*/
-		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(new Color(192, 192, 192));
 		setJMenuBar(menuBar);
@@ -423,7 +417,9 @@ public class MainUI extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/dark.xml"));
-					theme.apply(getRSyntaxTextArea());
+					for (RSyntaxTextArea r : MainUI.getAllRSyntaxTextArea()) {
+						theme.apply(r);
+					}
 				} catch (IOException e1) {
 					ConsoleManager.getManager().error(e1.getCause().toString());
 				}
@@ -437,7 +433,9 @@ public class MainUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/default.xml"));
-					theme.apply(getRSyntaxTextArea());
+					for (RSyntaxTextArea r : MainUI.getAllRSyntaxTextArea()) {
+						theme.apply(r);
+					}
 				} catch (IOException e1) {
 					ConsoleManager.getManager().error(e1.getCause().toString());
 				}
@@ -451,7 +449,9 @@ public class MainUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/eclipse.xml"));
-					theme.apply(getRSyntaxTextArea());
+					for (RSyntaxTextArea r : MainUI.getAllRSyntaxTextArea()) {
+						theme.apply(r);
+					}
 				} catch (IOException e1) {
 					ConsoleManager.getManager().error(e1.getCause().toString());
 				}
@@ -465,7 +465,9 @@ public class MainUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/idea.xml"));
-					theme.apply(getRSyntaxTextArea());
+					for (RSyntaxTextArea r : MainUI.getAllRSyntaxTextArea()) {
+						theme.apply(r);
+					}
 				} catch (IOException e1) {
 					ConsoleManager.getManager().error(e1.getCause().toString());
 				}
@@ -479,7 +481,9 @@ public class MainUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/vs.xml"));
-					theme.apply(getRSyntaxTextArea());
+					for (RSyntaxTextArea r : MainUI.getAllRSyntaxTextArea()) {
+						theme.apply(r);
+					}
 				} catch (IOException e1) {
 					ConsoleManager.getManager().error(e1.getCause().toString());
 				}
@@ -516,33 +520,21 @@ public class MainUI extends JFrame {
 		}
 	}
 
-	public static RSyntaxTextArea getRSyntaxTextArea() {
-		if (tabbedPane.getSelectedComponent() instanceof JPanel) {
-			for (Component component : ((JPanel) tabbedPane.getSelectedComponent()).getComponents()) {
-				if (component instanceof JScrollPane) {
-					((JScrollPane) component).getViewport().getView();
-					Component syntaxArea = ((RTextScrollPane) component).getViewport().getView();
-					return (RSyntaxTextArea) syntaxArea;
-				}
-			}
-		} else if (tabbedPane.getSelectedComponent() instanceof JScrollPane) {
-			Component component = ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView();
-			((RSyntaxTextArea) component).insert(getClipboardContents(), ((RSyntaxTextArea) component).getCaretPosition());
-			return (RSyntaxTextArea) component;
-		} else if(tabbedPane.getSelectedComponent() instanceof RSyntaxTextArea) {
-			ConsoleManager.getManager().log("Found RSyntaxTextArea");
-		} else if(tabbedPane.getSelectedComponent() instanceof RTextScrollPane) {
-			ConsoleManager.getManager().log("Found RTextScrollPane");
-		} else if(tabbedPane.getComponentAt(2) instanceof RTextScrollPane) {
-			ConsoleManager.getManager().log("Found RTextScrollPane");
+	public static RSyntaxTextArea getRSyntaxTextArea(int tab) {
+		tab--;
+		if (tab < 0 || tab >= tabbedPane.getTabCount())
+			return null;
+		JPanel temp = (JPanel) tabbedPane.getComponentAt(tab);
+		RTextScrollPane pane = (RTextScrollPane) temp.getComponent(0);
+		return (RSyntaxTextArea) pane.getViewport().getView();
+	}
+
+	public static RSyntaxTextArea[] getAllRSyntaxTextArea() {
+		ArrayList<RSyntaxTextArea> a = new ArrayList<RSyntaxTextArea>();
+		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+			a.add(getRSyntaxTextArea(i));
 		}
-		else {
-			ConsoleManager.getManager().log("Having trouble finding components, see list:");
-			for (Component component : tabbedPane.getComponents()) {
-				ConsoleManager.getManager().log(component.toString());
-			}
-		}
-		return null;
+		return (RSyntaxTextArea[]) a.toArray();
 	}
 
 	public static String getClipboardContents() {
