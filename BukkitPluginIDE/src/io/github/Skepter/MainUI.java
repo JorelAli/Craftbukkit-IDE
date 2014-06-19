@@ -78,9 +78,7 @@ public class MainUI extends JFrame {
 		try {
 			theme = Theme.load(MainUI.class.getResourceAsStream("/io/github/Skepter/themes/default.xml"));
 		} catch (IOException e2) {
-			//
 		}
-		setVisible(true);
 		getContentPane().setBackground(baseColor);
 		tabCount = 0;
 		setBounds(100, 100, 900, 600);
@@ -129,6 +127,8 @@ public class MainUI extends JFrame {
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 864, Short.MAX_VALUE).addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false).addComponent(panelConsole, 0, 0, Short.MAX_VALUE).addComponent(panelFiles, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE).addGroup(groupLayout.createSequentialGroup().addComponent(panelUtilities, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED))).addGap(10).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE))).addContainerGap()));
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup().addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addComponent(panelFiles, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(panelUtilities, GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(panelConsole, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)).addContainerGap()));
 
+		/* Nav: Utilities panel on the left hand side*/
+		
 		JTabbedPane tabbedPaneUtilities = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout gl_panelUtilities = new GroupLayout(panelUtilities);
 		gl_panelUtilities.setHorizontalGroup(gl_panelUtilities.createParallelGroup(Alignment.LEADING).addGroup(gl_panelUtilities.createSequentialGroup().addContainerGap().addComponent(tabbedPaneUtilities, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE).addContainerGap()));
@@ -147,12 +147,6 @@ public class MainUI extends JFrame {
 		tabbedPaneUtilities.insertTab("Actions", null, utilitiesActionPanel, null, 2);
 		tabbedPaneUtilities.insertTab("Tree", null, utilitiesTreePanel, null, 3);
 		GroupLayout gl_utilitiesTreePanel = new GroupLayout(utilitiesTreePanel);
-
-		JavaOutlineTree tree = new JavaOutlineTree();
-		System.out.println(getRSyntaxTextArea());
-		tree.listenTo(getRSyntaxTextArea());
-		tree.setVisible(true);
-		utilitiesTreePanel.add(tree);
 
 		gl_utilitiesTreePanel.setHorizontalGroup(gl_utilitiesTreePanel.createParallelGroup(Alignment.LEADING).addGap(0, 314, Short.MAX_VALUE));
 		gl_utilitiesTreePanel.setVerticalGroup(gl_utilitiesTreePanel.createParallelGroup(Alignment.LEADING).addGap(0, 261, Short.MAX_VALUE));
@@ -227,6 +221,8 @@ public class MainUI extends JFrame {
 
 		getContentPane().setLayout(groupLayout);
 
+		/* Nav: RSyntaxTextArea*/
+		
 		JPanel cp = new JPanel(new BorderLayout());
 		RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
 		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
@@ -247,8 +243,15 @@ public class MainUI extends JFrame {
 
 		ErrorStrip es = new ErrorStrip(textArea);
 		cp.add(es, BorderLayout.LINE_END);
-
 		tabbedPane.addTab("Main class", cp);
+		
+		JavaOutlineTree tree = new JavaOutlineTree();
+		tree.listenTo(getRSyntaxTextArea());
+		tree.setVisible(true);
+		utilitiesTreePanel.add(tree);
+		
+		/* Nav: Begin of JMenuBar*/
+		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(new Color(192, 192, 192));
 		setJMenuBar(menuBar);
@@ -484,6 +487,7 @@ public class MainUI extends JFrame {
 		});
 		mntmVs.setIcon(new ImageIcon(MainUI.class.getResource("/io/github/Skepter/imageResources/icons/Magic wand.png")));
 		mnSyntaxTheme.add(mntmVs);
+		setVisible(true);
 	}
 
 	public static void copyToClipboard(String s) {
@@ -525,10 +529,17 @@ public class MainUI extends JFrame {
 			Component component = ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView();
 			((RSyntaxTextArea) component).insert(getClipboardContents(), ((RSyntaxTextArea) component).getCaretPosition());
 			return (RSyntaxTextArea) component;
-		} else {
+		} else if(tabbedPane.getSelectedComponent() instanceof RSyntaxTextArea) {
+			ConsoleManager.getManager().log("Found RSyntaxTextArea");
+		} else if(tabbedPane.getSelectedComponent() instanceof RTextScrollPane) {
+			ConsoleManager.getManager().log("Found RTextScrollPane");
+		} else if(tabbedPane.getComponentAt(2) instanceof RTextScrollPane) {
+			ConsoleManager.getManager().log("Found RTextScrollPane");
+		}
+		else {
 			ConsoleManager.getManager().log("Having trouble finding components, see list:");
 			for (Component component : tabbedPane.getComponents()) {
-				ConsoleManager.getManager().log(component.getName());
+				ConsoleManager.getManager().log(component.toString());
 			}
 		}
 		return null;

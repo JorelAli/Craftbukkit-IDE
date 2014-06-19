@@ -1,5 +1,7 @@
 package io.github.Skepter;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -15,11 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import java.awt.Color;
+
+import com.alee.laf.WebLookAndFeel;
 
 public class SplashScreen extends JDialog {
 
@@ -28,8 +30,10 @@ public class SplashScreen extends JDialog {
 
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("com.alee.laf.WebLookAndFeel");
-			//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			// UIManager.setLookAndFeel("com.alee.laf.WebLookAndFeel");
+			UIManager.setLookAndFeel(WebLookAndFeel.class.getCanonicalName());
+			WebLookAndFeel.initializeManagers();
+			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			MainUI.baseColor = new Color(30, 144, 255);
 			SplashScreen dialog = new SplashScreen();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
